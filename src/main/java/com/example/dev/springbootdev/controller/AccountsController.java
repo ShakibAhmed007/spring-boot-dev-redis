@@ -52,10 +52,10 @@ public class AccountsController {
         return accountsService.getById(id);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Object> add(@Valid @RequestBody Accounts account1) throws Exception {
-        int x = 2000010;
-        int limit = (x + 500000);
+    @PostMapping("/saveDummyAccounts")
+    public ResponseEntity<Object> saveDummyAccounts()throws Exception{
+        int x = 2500011;
+        int limit = (x + 50000);
         List<Accounts> accounts = new ArrayList<>();
         while (x <= limit) {
             Accounts account = new Accounts();
@@ -76,7 +76,13 @@ public class AccountsController {
         } catch (Exception e) {
             System.out.println(e);
         }
-
+        // add location in response header
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand("100").toUri(); // todo 100 should be from db
+        return ResponseEntity.created(location).build();
+    }
+    @PostMapping("/add")
+    public ResponseEntity<Object> add(@Valid @RequestBody Accounts account) throws Exception {
+        accountsService.add(account);
         // add location in response header
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand("100").toUri(); // todo 100 should be from db
         return ResponseEntity.created(location).build();
