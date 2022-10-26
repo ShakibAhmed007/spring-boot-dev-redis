@@ -89,9 +89,8 @@ public class AccountsController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<Object> edit(@Valid @RequestBody Accounts accounts) throws Exception {
-        accountsService.edit(accounts);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Object> edit(@Valid @RequestBody Accounts account) throws Exception {
+        return ResponseEntity.ok(accountsService.edit(account, account.getId()));
     }
 
     @DeleteMapping("/deleteAll")

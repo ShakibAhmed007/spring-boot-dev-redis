@@ -3,6 +3,9 @@ package com.example.dev.springbootdev.service;
 import com.example.dev.springbootdev.entities.Accounts;
 import com.example.dev.springbootdev.repository.AccountsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,8 +29,9 @@ public class AccountsService {
         accountsRepository.saveAll(accounts);
     }
 
-    public void edit(Accounts acc) throws Exception{
-        accountsRepository.save(acc);
+    @CachePut(value = "Account", key="#id")
+    public Accounts edit(Accounts acc, Long id) throws Exception{
+        return accountsRepository.save(acc);
     }
 
     public List<Accounts> getAll(){
@@ -42,6 +46,7 @@ public class AccountsService {
         return accountsRepository.findByUserRole(role);
     }
 
+    @Cacheable(value = "Accounts")
     public Page<Accounts> getAllByPagination(Integer pageNumber, Integer pageSize, String sortBy, Boolean isAscending){
         Sort sort = Sort.by(sortBy).descending();
         if(isAscending)
@@ -50,6 +55,7 @@ public class AccountsService {
         return accountsRepository.findAll(pageable);
     }
 
+    @Cacheable(value = "Account", key = "#id")
     public Optional<Accounts> getById(Long id){
         Optional<Accounts> optional = accountsRepository.findById(id);
         return optional.stream().findFirst();
@@ -59,6 +65,7 @@ public class AccountsService {
         accountsRepository.deleteAll();
     }
 
+    @CacheEvict(value = "Account", key = "#id")
     public void deleteById(Long id)throws Exception{
         accountsRepository.deleteById(id);
     }

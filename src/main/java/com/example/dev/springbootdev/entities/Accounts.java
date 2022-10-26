@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name="accounts")
-public class Accounts {
+public class Accounts implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
