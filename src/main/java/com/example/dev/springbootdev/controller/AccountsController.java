@@ -54,13 +54,14 @@ public class AccountsController {
 
     @PostMapping("/saveDummyAccounts")
     public ResponseEntity<Object> saveDummyAccounts()throws Exception{
-        int x = 2500011;
+        int x = 1;
         int limit = (x + 50000);
         List<Accounts> accounts = new ArrayList<>();
         while (x <= limit) {
+            UUID uuid = UUID.randomUUID();
             Accounts account = new Accounts();
-            account.setUserName("shakib" + x);
-            account.setUserEmail("shakkib" + x + "@gmail.com");
+            account.setUserName("shakib" + uuid.toString());
+            account.setUserEmail("shakkib" +  uuid.toString() + "@gmail.com");
             account.setPassword("xcxcvsdfsdgsdg");
             account.setUserAge(x);
             account.setUserRole("ADMIN");
