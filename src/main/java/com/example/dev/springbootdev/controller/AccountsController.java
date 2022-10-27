@@ -52,12 +52,12 @@ public class AccountsController {
         return accountsService.getById(id);
     }
 
-    @PostMapping("/saveDummyAccounts")
-    public ResponseEntity<Object> saveDummyAccounts()throws Exception{
-        int x = 1;
-        int limit = (x + 50000);
-        List<Accounts> accounts = new ArrayList<>();
-        while (x <= limit) {
+    @PostMapping("/saveDummyAccounts/{no}")
+    public ResponseEntity<Object> saveDummyAccounts(@PathVariable Integer no)throws Exception{
+        int x = 0;
+        int limit = (x + no);
+        Accounts[] accounts = new Accounts[limit];
+        while (x < limit) {
             UUID uuid = UUID.randomUUID();
             Accounts account = new Accounts();
             account.setUserName("shakib" + uuid.toString());
@@ -69,11 +69,11 @@ public class AccountsController {
             account.setCreatedOn(LocalDateTime.now());
             account.setUpdatedOn(LocalDateTime.now());
             account.setLastLogin(LocalDateTime.now());
-            accounts.add(account);
+            accounts[x] = account;
             x++;
         }
         try {
-            accountsService.saveAll(accounts);
+            accountsService.saveAll(Arrays.asList(accounts));
         } catch (Exception e) {
             System.out.println(e);
         }
